@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+    <variable
+        name="asteroid"
+        type="com.udacity.asteroidradar.Asteroid" />
+    </data>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:background="#000000">
+
+
+
+        <ImageView
+            android:id="@+id/iv_potential_hazardous"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_asteroid_date"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.903"
+            app:layout_constraintStart_toEndOf="@+id/tv_asteroid_date"
+            app:layout_constraintTop_toTopOf="@+id/tv_asteroid_name"
+            app:srcCompat="@drawable/ic_status_potentially_hazardous" />
+
+        <TextView
+            android:id="@+id/tv_asteroid_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/allerta_stencil"
+            android:textColor="@color/text_color"
+            android:textSize="@dimen/asteroid_name_size"
+            app:layout_constraintBottom_toTopOf="@+id/tv_asteroid_date"
+            app:layout_constraintEnd_toEndOf="@+id/tv_asteroid_date"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/tv_asteroid_date"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0"
+            android:text="@{asteroid.codename}"/>
+
+        <TextView
+            android:id="@+id/tv_asteroid_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/text_color"
+            android:textSize="@dimen/asteroid_date_size"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.076"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.688"
+            android:text="@{asteroid.closeApproachDate}"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
