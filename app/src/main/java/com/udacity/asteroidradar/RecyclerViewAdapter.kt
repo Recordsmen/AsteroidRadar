@@ -1,55 +1,60 @@
 package com.udacity.asteroidradar
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.udacity.asteroidradar.Asteroid
+import com.udacity.asteroidradar.databinding.RecyclerviewItemBinding
 
-class RecyclerViewAdapter() :
-    RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>() {
+class RecyclerViewAdapter(val clickListener: AsteroidClickListener) : RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>() {
     private var dataSet = listOf<Asteroid>()
-    /**
-     * Provide a reference to the type of views that you are using
-     * (custom ViewHolder).
-     */
-    class ViewHolder(view:View) : RecyclerView.ViewHolder(view) {
-        val tv_asteroid_date: TextView = view.findViewById(R.id.tv_asteroid_date)
-        val tv_codename: TextView = view.findViewById(R.id.tv_asteroid_name)
-        val iv_Hazardous: ImageView = view.findViewById(R.id.iv_potential_hazardous)
 
+    class ViewHolder private constructor(val binding: RecyclerviewItemBinding): RecyclerView.ViewHolder(binding.root) {
+
+        fun bind(clickListener: AsteroidClickListener, item: Asteroid) {
+            binding.asteroid = item
+            binding.clickListener = clickListener
+            binding.executePendingBindings()
+        }
+
+        companion object {
+            fun from(parent: ViewGroup): ViewHolder {
+                val layoutInflater = LayoutInflater.from(parent.context)
+                val binding = RecyclerviewItemBinding.inflate(layoutInflater, parent, false)
+
+                return ViewHolder(binding)
+            }
+        }
     }
 
     // Create new views (invoked by the layout manager)
-    override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
-        // Create a new view, which defines the UI of the list item
-        val view = LayoutInflater.from(viewGroup.context)
-            .inflate(R.layout.recyclerview_item, viewGroup, false)
-
-        return ViewHolder(view)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        return ViewHolder.from(parent)
     }
 
-    // Replace the contents of a view (invoked by the layout manager)
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
-        viewHolder.tv_asteroid_date.text = dataSet[position].closeApproachDate
-        viewHolder.tv_codename.text = dataSet[position].codename
-        viewHolder.iv_Hazardous.setImageResource(
+
+        viewHolder.binding.tvAsteroidDate.text = dataSet[position].closeApproachDate
+        viewHolder.binding.tvAsteroidName.text = dataSet[position].codename
+        viewHolder.binding.ivPotentialHazardous.setImageResource(
         when (dataSet[position].isPotentiallyHazardous){
             true -> R.drawable.ic_status_potentially_hazardous
-
             else -> R.drawable.ic_status_normal
-
-        }
+            }
         )
+        viewHolder.bind(clickListener, dataSet[position])
     }
-
-    // Return the size of your dataset (invoked by the layout manager)
     override fun getItemCount() = dataSet.size
 
+    @SuppressLint("NotifyDataSetChanged")
     fun setData(newList:List<Asteroid>){
         dataSet = newList
         notifyDataSetChanged()
     }
-
+}
+class AsteroidClickListener(val clickListener: (asteroid: Asteroid) -> Unit) {
+    fun onClick(asteroid: Asteroid){
+        clickListener(asteroid)
+    }
 }
