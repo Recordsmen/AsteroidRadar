@@ -5,19 +5,25 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 
-@Database(entities = [Asteroid::class], version = 1 , exportSchema = false)
+@Database(entities = [
+    DatabaseAsteroid::class,
+    DataBasePicture::class
+                     ], version = 2)
+
 abstract class AsteroidDataBase:RoomDatabase() {
 
     abstract val asteroidDataBaseDao: AsteroidDataBaseDao
+    abstract val pictureDataBaseDao: PictureDataBaseDao
 
     companion object{
-
         @Volatile
-        private var INSTANCE: AsteroidDataBase? = null
-        fun getInstance(context: Context): AsteroidDataBase {
-            synchronized(this) {
+        private var INSTANCE:AsteroidDataBase? = null
+
+        fun getDatabase(context: Context): AsteroidDataBase{
+            synchronized(this){
                 var instance = INSTANCE
-                if (instance == null){
+
+                if (instance == null) {
                     instance = Room.databaseBuilder(
                         context.applicationContext,
                         AsteroidDataBase::class.java,
@@ -27,12 +33,11 @@ abstract class AsteroidDataBase:RoomDatabase() {
                         .build()
                     INSTANCE = instance
                 }
+
                 return instance
-
+                }
             }
-
         }
 
     }
 
-}
