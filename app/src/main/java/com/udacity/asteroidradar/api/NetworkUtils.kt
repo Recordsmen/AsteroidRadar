@@ -95,13 +95,3 @@ fun ArrayList<Asteroid>.asDomainModel(): Array<DatabaseAsteroid> {
     }
         .toTypedArray()
 }
-
-//fun PictureOfDay.asModel(): DataBasePicture {
-//    return map {
-//        DataBasePicture(
-//            mediaType = mediaType,
-//            title = title,
-//            url = url
-//        )
-//    }
-//}

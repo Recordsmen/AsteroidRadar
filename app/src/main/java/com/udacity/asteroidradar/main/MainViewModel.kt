@@ -4,7 +4,7 @@ import android.app.Application
 import android.util.Log
 import androidx.lifecycle.*
 import com.udacity.asteroidradar.Asteroid
-import com.udacity.asteroidradar.AsteroidRepository
+import com.udacity.asteroidradar.repository.AsteroidRepository
 import com.udacity.asteroidradar.database.AsteroidDataBase
 import com.udacity.asteroidradar.model.PictureOfDay
 import kotlinx.coroutines.launch
@@ -12,7 +12,6 @@ import kotlinx.coroutines.launch
 class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     private val database = AsteroidDataBase.getDatabase(application.applicationContext)
-
     private val asteroidRepository = AsteroidRepository(database)
 
     private val _navigateToAsteroid = MutableLiveData<Asteroid>()
@@ -30,14 +29,12 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         getAsteroidsFromCache()
         getPictureFromCache()
     }
-
     fun onAsteroidClicked(asteroid: Asteroid){
         _navigateToAsteroid.value = asteroid
     }
     fun onDetailAsteroidNavigated() {
         _navigateToAsteroid.value = null
     }
-
     private fun refreshAsteroids() {
         viewModelScope.launch {
             try {
@@ -95,10 +92,8 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             try {
                 _response.value = asteroidRepository.getAllAsteroids()
             } catch (e: Exception){
-                println("Exception refreshing data: $e.message")
+                println("Exception refreshing data: ${e.message}")
             }
         }
     }
-
-
 }

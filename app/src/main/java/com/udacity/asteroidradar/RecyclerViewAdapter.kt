@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.udacity.asteroidradar.Asteroid
 import com.udacity.asteroidradar.databinding.RecyclerviewItemBinding
 
 class RecyclerViewAdapter(val clickListener: AsteroidClickListener) : RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>() {
@@ -28,13 +27,11 @@ class RecyclerViewAdapter(val clickListener: AsteroidClickListener) : RecyclerVi
         }
     }
 
-    // Create new views (invoked by the layout manager)
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder.from(parent)
     }
 
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
-
         viewHolder.binding.tvAsteroidDate.text = dataSet[position].closeApproachDate
         viewHolder.binding.tvAsteroidName.text = dataSet[position].codename
         viewHolder.binding.ivPotentialHazardous.setImageResource(
@@ -45,6 +42,7 @@ class RecyclerViewAdapter(val clickListener: AsteroidClickListener) : RecyclerVi
         )
         viewHolder.bind(clickListener, dataSet[position])
     }
+
     override fun getItemCount() = dataSet.size
 
     @SuppressLint("NotifyDataSetChanged")

@@ -1,6 +1,7 @@
-package com.udacity.asteroidradar
+package com.udacity.asteroidradar.repository
 
-import androidx.lifecycle.LiveData
+import com.udacity.asteroidradar.Asteroid
+import com.udacity.asteroidradar.Constants
 import com.udacity.asteroidradar.api.*
 import com.udacity.asteroidradar.database.AsteroidDataBase
 import com.udacity.asteroidradar.database.DataBasePicture
@@ -58,6 +59,13 @@ class AsteroidRepository(private val database: AsteroidDataBase) {
             result = database.pictureDataBaseDao.getTodayPicture()
         }
         return result
+    }
+    suspend fun deleteOldData(
+        startDate: String = getToday()
+    ){
+        withContext(Dispatchers.IO){
+            database.asteroidDataBaseDao.delete(startDate)
+        }
     }
 
 }

@@ -18,6 +18,9 @@ interface AsteroidDataBaseDao{
 
     @Query("SELECT * FROM DatabaseAsteroid WHERE closeApproachDate == :today")
     fun getTodayAsteroids(today: String):List<Asteroid>
+
+    @Query("DELETE FROM DatabaseAsteroid WHERE closeApproachDate < :today")
+    fun delete (today: String)
 }
 
 @Dao

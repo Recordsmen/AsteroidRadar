@@ -23,16 +23,12 @@ class MainFragment : Fragment() {
                               savedInstanceState: Bundle?): View? {
         binding = FragmentMainBinding.inflate(inflater)
         binding.lifecycleOwner = this
-
         adapter = RecyclerViewAdapter(AsteroidClickListener{ asteroid ->
             viewModel.onAsteroidClicked(asteroid)
         })
-
         binding.viewModel = viewModel
-
-        setHasOptionsMenu(true)
-
         binding.recyclerviewAsteroid.adapter = adapter
+        setHasOptionsMenu(true)
 
         viewModel.navigateToAsteroid.observe(viewLifecycleOwner, Observer {
             asteroid ->
@@ -40,14 +36,13 @@ class MainFragment : Fragment() {
                 this.findNavController().navigate(
                     MainFragmentDirections.actionShowDetail(it)
                 )
-                viewModel.onDetailAsteroidNavigated()
+                    viewModel.onDetailAsteroidNavigated()
+                }
             }
-        })
-
+        )
         viewModel.response.observe(viewLifecycleOwner, Observer {
             asteroid -> adapter.setData(asteroid)
         })
-
         return binding.root
     }
 
@@ -61,7 +56,6 @@ class MainFragment : Fragment() {
             R.id.show_rent_menu -> viewModel.getTodayAsteroids()
             R.id.show_all_menu -> viewModel.getAllAsteroids()
             R.id.show_buy_menu -> viewModel.getAllSavedAsteroids()
-
         }
         return true
     }
